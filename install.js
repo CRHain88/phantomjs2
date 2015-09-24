@@ -267,8 +267,9 @@ function requestBinary(requestOptions, filePath) {
       exit(1)
     }
   })).on('progress', function (state) {
+    var total = state.total || 21078380;
     if (!bar) {
-      bar = new progress('  [:bar] :percent :etas', {total: state.total, width: 40})
+      bar = new progress('  [:bar] :percent :etas', {total: total, width: 40})
     }
     bar.curr = state.received
     bar.tick(0)
@@ -349,6 +350,9 @@ function getDownloadUrl() {
           return
         default:
           console.error('Unsupported version of Linux - defaulting to 14.04 (likely will not work!)')
+          helper.version = '2.0.0-20141016'
+          downloadUrl = cdnUrl + helper.version + '/phantomjs-' + helper.version + '-'
+
           deferred.resolve(downloadUrl + 'u1404-x86_64.zip')
           return
       }
@@ -374,6 +378,7 @@ function copyIntoPlace(extractedPath, targetPath) {
     var files = fs.readdirSync(extractedPath)
     for (var i = 0; i < files.length; i++) {
       var file = path.join(extractedPath, files[i])
+
       if (fs.statSync(file).isDirectory() && (!isLinux() || file.indexOf(helper.version) != -1)) {
         console.log('Copying extracted folder', file, '->', targetPath)
         return kew.nfcall(ncp, file, targetPath)
