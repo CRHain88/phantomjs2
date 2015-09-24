@@ -338,7 +338,7 @@ function getDownloadUrl() {
       var cdnUrl = 'https://github.com/bprodoehl/phantomjs/releases/download/'
       var downloadUrl = cdnUrl + 'v' + helper.version + '/phantomjs-' + helper.version + '-'
 
-      var match = new RegExp(/Release:\s+([0-9\.]+)/).exec(stdout)
+      var match = new RegExp(/Release:\s+([0-9\.]+)/).exec(stdout) || [];
       var version = match[1]
       switch (version) {
         case '14.04':
